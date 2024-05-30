@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { UpdateThreadDTO, CreateThreadDTO } from "../dto/thread-dto";
+import { createThreadSchema } from "../validators/thread";
+import { v2 as cloudinary } from "cloudinary";
 
 const prisma = new PrismaClient();
 
@@ -27,12 +29,27 @@ async function findOne(id: number) {
 
 async function create(dto: CreateThreadDTO) {
   try {
-    // validasi menggunakan JOI
+    const validate = createThreadSchema.validate(dto);
+
+    if (validate.error) {
+      return validate.error;
+    }
+
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
+
+    const upload = await cloudinary.uploader.upload(dto.image, {
+      upload_preset: "b54circle",
+    });
 
     return await prisma.thread.create({
-      data: { ...dto },
+      data: { ...dto, image: upload.secure_url },
     });
   } catch (error) {
+    console.log(error);
     return error;
   }
 }

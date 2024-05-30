@@ -1,18 +1,21 @@
-import { PrismaClient } from "@prisma/client";
 import cors from "cors";
+import dotenv from "dotenv";
 import express, { Request, Response } from "express";
+import AuthController from "./controllers/auth";
 import ThreadController from "./controllers/thread";
+import { upload } from "./middlewares/upload-file";
+dotenv.config();
 
 const app = express();
 const port = 5000;
 const router = express.Router();
 const routerv2 = express.Router();
-const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
 app.use("/api/v1", router);
 app.use("/api/v2", routerv2);
+app.use("/uploads", express.static("uploads"))
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello welcome to circle!");
@@ -24,14 +27,13 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.get("/threads", ThreadController.find);
-
 router.get("/threads/:id", ThreadController.findOne);
-
-router.post("/threads", ThreadController.create);
-
+router.post("/threads", upload.single("image"),  ThreadController.create);
 router.patch("/threads/:id", ThreadController.update);
-
 router.delete("/threads/:id", ThreadController.remove);
+
+router.post("/auth/login", AuthController.login);
+router.post("/auth/register", AuthController.register);
 
 // v2
 routerv2.get("/", (req: Request, res: Response) => {

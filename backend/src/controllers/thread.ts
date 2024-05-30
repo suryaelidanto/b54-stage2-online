@@ -28,12 +28,15 @@ async function findOne(req: Request, res: Response) {
 
 async function create(req: Request, res: Response) {
   try {
-    const createdThread = await ThreadService.create(req.body);
+    const body = {
+      ...req.body,
+      image: req.file.path
+    }
+
+    const createdThread = await ThreadService.create(body);
     res.json(createdThread);
   } catch (error) {
-    res.json({
-      message: error,
-    });
+    res.json(error);
   }
 }
 
