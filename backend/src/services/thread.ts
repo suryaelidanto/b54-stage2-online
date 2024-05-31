@@ -19,11 +19,11 @@ async function findOne(id: number) {
       where: { id },
     });
 
-    if (!thread) return null;
+    if (!thread) throw new String("Thread not found!");
 
     return thread;
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
@@ -32,7 +32,7 @@ async function create(dto: CreateThreadDTO) {
     const validate = createThreadSchema.validate(dto);
 
     if (validate.error) {
-      return validate.error;
+      throw new String(validate.error.message);
     }
 
     cloudinary.config({
@@ -49,8 +49,7 @@ async function create(dto: CreateThreadDTO) {
       data: { ...dto, image: upload.secure_url },
     });
   } catch (error) {
-    console.log(error);
-    return error;
+    throw new String(error);
   }
 }
 
@@ -73,7 +72,7 @@ async function update(id: number, dto: UpdateThreadDTO) {
       data: { ...thread },
     });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
@@ -83,7 +82,7 @@ async function remove(id: number) {
       where: { id: Number(id) },
     });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 

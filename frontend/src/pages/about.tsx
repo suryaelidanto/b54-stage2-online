@@ -13,7 +13,6 @@ function AboutPage() {
 
   async function getPosts() {
     const response = await api.get("/home");
-    console.log(response.data);
     setPosts(response.data);
   }
 

@@ -23,6 +23,11 @@ model User {
   bio          String?
 
   threads Thread[]
+  replies Reply[]
+  likes   Like[]
+
+  followeds Follow[] @relation(name: "followed")
+  followers Follow[] @relation(name: "follower")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -38,8 +43,59 @@ model Thread {
   user   User? @relation(fields: [userId], references: [id])
   userId Int?
 
+  replies Reply[]
+  likes   Like[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   @@map("threads")
+}
+
+model Reply {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  thread   Thread? @relation(fields: [threadId], references: [id])
+  threadId Int?
+
+  image   String?
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("replies")
+}
+
+model Like {
+  id Int @id @default(autoincrement())
+
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  thread   Thread? @relation(fields: [threadId], references: [id])
+  threadId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("likes")
+}
+
+model Follow {
+  id Int @id @default(autoincrement())
+
+  followed   User? @relation(name: "followed", fields: [followedId], references: [id])
+  followedId Int?
+
+  follower   User? @relation(name: "follower", fields: [followerId], references: [id])
+  followerId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("follows")
 }

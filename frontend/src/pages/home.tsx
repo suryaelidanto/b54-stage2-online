@@ -5,8 +5,6 @@ import { TransactionContext } from "../context/transaction";
 function HomePage() {
   const state = useContext(TransactionContext);
 
-  console.log("transactions", state?.transactions);
-
   useEffect(() => {
     state?.addNewTransaction({
       id: 123,

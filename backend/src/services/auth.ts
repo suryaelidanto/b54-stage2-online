@@ -11,7 +11,7 @@ async function login(dto: LoginDTO) {
     const validate = loginSchema.validate(dto);
 
     if (validate.error) {
-      return validate.error;
+      throw new String(validate.error.message);
     }
 
     const user = await prisma.user.findUnique({
@@ -20,7 +20,7 @@ async function login(dto: LoginDTO) {
       },
     });
 
-    if (!user) throw new Error("User not found!");
+    if (!user) throw new String("User not found!");
 
     const isValidPassword = await bcrypt.compare(dto.password, user.password);
 
@@ -34,7 +34,7 @@ async function login(dto: LoginDTO) {
 
     return { token, user };
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
@@ -48,14 +48,14 @@ async function register(dto: RegisterDTO) {
     dto.password = hashedPassword;
 
     if (validate.error) {
-      return validate.error;
+      throw new String("User not found!");
     }
 
     return await prisma.user.create({
       data: { ...dto },
     });
   } catch (error) {
-    return error;
+    throw new String(error);
   }
 }
 
