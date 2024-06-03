@@ -1,8 +1,9 @@
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-import HomePage from "./pages/home";
-import AboutPage from "./pages/about";
-import DashboardPage from "./pages/dashboard";
 import { useState } from "react";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import AboutPage from "./pages/about";
+import LoginPage from "./pages/auth-login";
+import DashboardPage from "./pages/dashboard";
+import HomePage from "./pages/home";
 
 function App() {
   const [isLogin] = useState<boolean>(true);
@@ -16,6 +17,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/auth/login" element={<LoginPage />} />
+      <Route path="/auth/register" element={<LoginPage />} />
+
       <Route path="/about" element={<AboutPage />} />
 
       <Route element={<PrivateRoute />}>
