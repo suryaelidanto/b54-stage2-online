@@ -30,7 +30,7 @@ async function login(dto: LoginDTO) {
 
     const jwtSecret = process.env.JWT_SECRET;
 
-    const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret);
+    const token = jwt.sign(user, jwtSecret);
 
     return { token, user };
   } catch (error) {

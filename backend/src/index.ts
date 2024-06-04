@@ -9,7 +9,7 @@ import { authenticate } from "./middlewares/authenticate";
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const port = 3000;
 const router = express.Router();
 const routerv2 = express.Router();
 
@@ -41,6 +41,7 @@ router.delete("/threads/:id", authenticate, ThreadController.remove);
 
 router.post("/auth/login", AuthController.login);
 router.post("/auth/register", AuthController.register);
+router.post("/auth/check", authenticate, AuthController.check);
 
 router.get("/users", authenticate, UserController.find);
 
