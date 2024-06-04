@@ -6,8 +6,8 @@ async function login(req: Request, res: Response) {
     const user = await AuthService.login(req.body);
     res.json(user);
   } catch (error) {
-    res.json({
-      message: error,
+    res.status(error.message === "User not found" ? 404 : 500).json({
+      message: error.message,
     });
   }
 }
@@ -15,10 +15,10 @@ async function login(req: Request, res: Response) {
 async function register(req: Request, res: Response) {
   try {
     const user = await AuthService.register(req.body);
-    res.json(user);
+    res.status(201).json(user);
   } catch (error) {
-    res.json({
-      message: error,
+    res.status(500).json({
+      message: error.message,
     });
   }
 }

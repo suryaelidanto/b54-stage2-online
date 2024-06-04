@@ -9,21 +9,16 @@ async function find(user: UserJWTPayload) {
 
     const follows = await prisma.follow.findMany({
       where: {
-        follower: {
-          id: user.id,
-        },
+        followerId: user.id,
       },
     });
 
-    return users.map((user) => {
-      return follows.map((follow) => {
-        if (user.id === follow.followedId) return { ...user, isFollowed: true };
-
-        return { ...user, isFollowed: false };
-      })[0]
+    return users.map((u) => {
+      const isFollowed = follows.some((follow) => follow.followedId === u.id);
+      return { ...u, isFollowed };
     });
   } catch (error) {
-    throw new String(error);
+    throw new Error(error.message || "Failed to retrieve users");
   }
 }
 

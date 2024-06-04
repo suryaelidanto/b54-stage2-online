@@ -8,7 +8,7 @@ async function find(req: Request, res: Response) {
     return res.json(users);
   } catch (error) {
     res.status(500).json({
-      message: error,
+      message: error.message,
     });
   }
 }

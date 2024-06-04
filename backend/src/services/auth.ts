@@ -11,7 +11,7 @@ async function login(dto: LoginDTO) {
     const validate = loginSchema.validate(dto);
 
     if (validate.error) {
-      throw new String(validate.error.message);
+      throw new Error(validate.error.message);
     }
 
     const user = await prisma.user.findUnique({
@@ -20,21 +20,21 @@ async function login(dto: LoginDTO) {
       },
     });
 
-    if (!user) throw new String("User not found!");
+    if (!user) throw new Error("User not found");
 
     const isValidPassword = await bcrypt.compare(dto.password, user.password);
 
-    if (!isValidPassword) throw new Error("User not found!");
+    if (!isValidPassword) throw new Error("Invalid password");
 
     delete user.password;
 
     const jwtSecret = process.env.JWT_SECRET;
 
-    const token = jwt.sign(user, jwtSecret);
+    const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret);
 
     return { token, user };
   } catch (error) {
-    throw new String(error);
+    throw new Error(error.message || "Failed to login");
   }
 }
 
@@ -42,20 +42,20 @@ async function register(dto: RegisterDTO) {
   try {
     const validate = registerSchema.validate(dto);
 
+    if (validate.error) {
+      throw new Error(validate.error.message);
+    }
+
     const salt = 10;
     const hashedPassword = await bcrypt.hash(dto.password, salt);
 
     dto.password = hashedPassword;
 
-    if (validate.error) {
-      throw new String("User not found!");
-    }
-
     return await prisma.user.create({
       data: { ...dto },
     });
   } catch (error) {
-    throw new String(error);
+    throw new Error(error.message || "Failed to register");
   }
 }
 

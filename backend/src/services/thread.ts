@@ -9,7 +9,7 @@ async function find() {
   try {
     return await prisma.thread.findMany();
   } catch (error) {
-    return error;
+    throw new Error("Failed to retrieve threads");
   }
 }
 
@@ -19,11 +19,11 @@ async function findOne(id: number) {
       where: { id },
     });
 
-    if (!thread) throw new String("Thread not found!");
+    if (!thread) throw new Error("Thread not found");
 
     return thread;
   } catch (error) {
-    throw new String(error);
+    throw new Error(error.message || "Failed to retrieve thread");
   }
 }
 
@@ -32,7 +32,7 @@ async function create(dto: CreateThreadDTO) {
     const validate = createThreadSchema.validate(dto);
 
     if (validate.error) {
-      throw new String(validate.error.message);
+      throw new Error(validate.error.message);
     }
 
     cloudinary.config({
@@ -49,7 +49,7 @@ async function create(dto: CreateThreadDTO) {
       data: { ...dto, image: upload.secure_url },
     });
   } catch (error) {
-    throw new String(error);
+    throw new Error(error.message || "Failed to create thread");
   }
 }
 
@@ -58,6 +58,8 @@ async function update(id: number, dto: UpdateThreadDTO) {
     const thread = await prisma.thread.findFirst({
       where: { id: Number(id) },
     });
+
+    if (!thread) throw new Error("Thread not found");
 
     if (dto.content) {
       thread.content = dto.content;
@@ -72,7 +74,7 @@ async function update(id: number, dto: UpdateThreadDTO) {
       data: { ...thread },
     });
   } catch (error) {
-    throw new String(error);
+    throw new Error(error.message || "Failed to update thread");
   }
 }
 
@@ -82,7 +84,7 @@ async function remove(id: number) {
       where: { id: Number(id) },
     });
   } catch (error) {
-    throw new String(error);
+    throw new Error(error.message || "Failed to delete thread");
   }
 }
 
