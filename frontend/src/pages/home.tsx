@@ -1,30 +1,23 @@
-import { useContext, useEffect } from "react";
-import { Card } from "../components/card";
-import { TransactionContext } from "../context/transaction";
+import { RootState } from "@/redux/store";
+import { Image } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 function HomePage() {
-  const state = useContext(TransactionContext);
-
-  useEffect(() => {
-    state?.addNewTransaction({
-      id: 123,
-      name: "bbb",
-      price: 123,
-      qty: 123,
-    });
-  }, []);
-
-  const data = {
-    image:
-      "https://images.pexels.com/photos/22882440/pexels-photo-22882440/free-photo-of-copa-cozinha-04.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-    name: "Rumah impian",
-    quote: "Ini rumah impian saya",
-  };
+  const currentUser = useSelector((state: RootState) => state.auth.user);
 
   return (
     <>
-      <Card image={data.image} name={data.name} quote={data.quote} />
-      {JSON.stringify(state?.transactions)}
+      <div>
+        <h1 style={{ color: "white" }}>Full Name: {currentUser.fullName}</h1>
+        <h1 style={{ color: "white" }}>Bio: {currentUser.bio}</h1>
+        <h1 style={{ color: "white" }}>Username: {currentUser.username}</h1>
+        <h1 style={{ color: "white" }}>Email: {currentUser.email}</h1>
+        <Image
+          src={currentUser.photoProfile}
+          width={"100px"}
+          height={"100px"}
+        />
+      </div>
     </>
   );
 }
