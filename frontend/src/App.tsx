@@ -9,11 +9,14 @@ import HomePage from "./pages/home";
 import { RootState } from "./redux/store";
 import { SET_USER } from "./redux/slices/auth";
 import RegisterPage from "./pages/auth-register";
+import PostPage from "./pages/post";
+import { useToast } from "@chakra-ui/react";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const PrivateRoute = () => {
     if (!isLoading) {
@@ -41,6 +44,12 @@ function App() {
     } catch (error) {
       localStorage.removeItem("token");
       setIsLoading(false);
+      toast({
+        title: "User not authenticated!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   }
 
@@ -55,6 +64,7 @@ function App() {
       <Route path="/auth/register" element={<RegisterPage />} />
 
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/post" element={<PostPage />} />
 
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<HomePage />} />

@@ -1,5 +1,5 @@
 import { api } from "@/libs/api";
-import { Box, BoxProps, Button, Input } from "@chakra-ui/react";
+import { Box, BoxProps, Button, Input, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +17,7 @@ export function RegisterForm(props: RegisterFormProps) {
   });
 
   const navigate = useNavigate();
+  const toast = useToast();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const name = event.target.name;
@@ -32,8 +33,19 @@ export function RegisterForm(props: RegisterFormProps) {
     try {
       await api.post("/auth/register", form);
       navigate("/auth/login");
+      toast({
+        title: "Register success!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "Register failed!",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   }
 
