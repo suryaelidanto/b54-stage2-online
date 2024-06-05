@@ -1,8 +1,8 @@
 import CircleLogo from "@/assets/logo.svg";
-import { LoginForm } from "@/features/auth-login/components/login-form";
+import { RegisterForm } from "@/features/auth-register/components/register-form";
 import { Box, Image, Text } from "@chakra-ui/react";
 
-function LoginPage() {
+function RegisterPage() {
   return (
     <Box
       display={"flex"}
@@ -15,13 +15,13 @@ function LoginPage() {
         <Box marginBottom={"15px"}>
           <Image src={CircleLogo} height={"20px"} />
           <Text fontWeight={"bold"} fontSize={"30px"} color={"white"}>
-            Login to Circle
+            Create account Circle
           </Text>
         </Box>
-        <LoginForm width={"500px"} />
+        <RegisterForm width={"500px"} />
       </Box>
     </Box>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

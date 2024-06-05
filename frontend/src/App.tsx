@@ -8,6 +8,7 @@ import DashboardPage from "./pages/dashboard";
 import HomePage from "./pages/home";
 import { RootState } from "./redux/store";
 import { SET_USER } from "./redux/slices/auth";
+import RegisterPage from "./pages/auth-register";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -51,7 +52,7 @@ function App() {
   return (
     <Routes>
       <Route path="/auth/login" element={<LoginPage />} />
-      <Route path="/auth/register" element={<LoginPage />} />
+      <Route path="/auth/register" element={<RegisterPage />} />
 
       <Route path="/about" element={<AboutPage />} />
 
