@@ -10,7 +10,7 @@ export function ThreadCard({ thread }: ThreadCardProps) {
   return (
     <Box display={"flex"} gap={3}>
       <Image
-        src={""}
+        src={thread.user.photoProfile}
         width={"30px"}
         height={"30px"}
         borderRadius={"100%"}
@@ -18,9 +18,9 @@ export function ThreadCard({ thread }: ThreadCardProps) {
       />
       <Box>
         <Box display={"flex"} gap={2}>
-          <Text fontWeight={"bold"}>Indah Pra Karya</Text>
-          <Text>@indahpra</Text>
-          <Text>4h</Text>
+          <Text fontWeight={"bold"}>{thread?.user?.fullName}</Text>
+          <Text>@{thread?.user?.username}</Text>
+          <Text>{thread?.createdAt.toLocaleString()}</Text>
         </Box>
 
         <Text mt={"10px"}>{thread.content}</Text>

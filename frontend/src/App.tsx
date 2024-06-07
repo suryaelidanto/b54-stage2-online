@@ -1,16 +1,14 @@
+import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { api } from "./libs/api";
-import AboutPage from "./pages/about";
 import LoginPage from "./pages/auth-login";
-import DashboardPage from "./pages/dashboard";
-import HomePage from "./pages/home";
-import { RootState } from "./redux/store";
-import { SET_USER } from "./redux/slices/auth";
 import RegisterPage from "./pages/auth-register";
-import PostPage from "./pages/post";
-import { useToast } from "@chakra-ui/react";
+import HomePage from "./pages/home";
+import SearchPage from "./pages/search";
+import { SET_USER } from "./redux/slices/auth";
+import { RootState } from "./redux/store";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -63,12 +61,9 @@ function App() {
       <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/auth/register" element={<RegisterPage />} />
 
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/post" element={<PostPage />} />
-
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Route>
     </Routes>
   );
