@@ -7,7 +7,18 @@ const prisma = new PrismaClient();
 
 async function find() {
   try {
-    return await prisma.thread.findMany();
+    return await prisma.thread.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            fullName: true,
+            photoProfile: true,
+          },
+        },
+      },
+    });
   } catch (error) {
     throw new Error("Failed to retrieve threads");
   }
@@ -27,7 +38,7 @@ async function findOne(id: number) {
   }
 }
 
-async function create(dto: CreateThreadDTO) {
+async function create(dto: CreateThreadDTO, userId: number) {
   try {
     const validate = createThreadSchema.validate(dto);
 
@@ -46,7 +57,7 @@ async function create(dto: CreateThreadDTO) {
     });
 
     return await prisma.thread.create({
-      data: { ...dto, image: upload.secure_url },
+      data: { ...dto, userId, image: upload.secure_url },
     });
   } catch (error) {
     throw new Error(error.message || "Failed to create thread");

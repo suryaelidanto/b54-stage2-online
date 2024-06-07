@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import ThreadService from "../services/thread";
+import { UserJWTPayload } from "../types/auth";
 
 async function find(req: Request, res: Response) {
   try {
@@ -27,12 +28,13 @@ async function findOne(req: Request, res: Response) {
 
 async function create(req: Request, res: Response) {
   try {
+    const user = res.locals.user as UserJWTPayload;
     const body = {
       ...req.body,
       image: req.file ? req.file.path : "",
     };
 
-    const createdThread = await ThreadService.create(body);
+    const createdThread = await ThreadService.create(body, user.id);
     res.status(201).json(createdThread);
   } catch (error) {
     res.status(500).json({ message: error.message });
