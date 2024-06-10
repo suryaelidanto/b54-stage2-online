@@ -8,3 +8,5 @@ temp/
 uploads
 
 .env
+
+dist
