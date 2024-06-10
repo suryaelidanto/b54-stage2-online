@@ -1,7 +1,6 @@
 import { UserSearch } from "@/features/search/types/search";
 import { api } from "@/libs/api";
 import { Box, Button, Image, Input, Text } from "@chakra-ui/react";
-import { Heart, MessageSquareText } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 

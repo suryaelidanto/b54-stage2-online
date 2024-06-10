@@ -1,8 +1,8 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function PostPage() {
-  const [data, setData] = useState();
+  const [, setData] = useState();
   const [counter, setCounter] = useState<number>(0);
 
   async function getData() {
@@ -12,7 +12,7 @@ export default function PostPage() {
       );
 
       setData(response.data);
-    } catch (error: unknown | AxiosError) {
+    } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.log("gagal mengambil data");
       }
