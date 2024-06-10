@@ -26,6 +26,8 @@
       "reflect-metadata": "^0.1.13"
    },
    "scripts": {
-      "start": "nodemon src/index.ts"
+      "start": "node dist/index.js",
+      "dev" : "nodemon src/index.ts",
+      "build" : "tsc && prisma generate"
    }
 }

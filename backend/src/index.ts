@@ -9,7 +9,7 @@ import { authenticate } from "./middlewares/authenticate";
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const router = express.Router();
 const routerv2 = express.Router();
 
