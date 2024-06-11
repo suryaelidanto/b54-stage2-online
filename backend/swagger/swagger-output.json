@@ -5,6 +5,14 @@
     "description": "Welcome to my API Docs",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://refreshing-happiness-production.up.railway.app"
+    },
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
   "paths": {
     "/": {
       "get": {
