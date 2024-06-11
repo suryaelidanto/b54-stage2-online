@@ -6,6 +6,8 @@ import ThreadController from "./controllers/thread";
 import UserController from "./controllers/user";
 import { upload } from "./middlewares/upload-file";
 import { authenticate } from "./middlewares/authenticate";
+import swaggerUi from "swagger-ui-express";
+import swaggerDoc from "../swagger/swagger-output.json";
 dotenv.config();
 
 const app = express();
@@ -18,6 +20,16 @@ app.use(express.json());
 app.use("/api/v1", router);
 app.use("/api/v2", routerv2);
 app.use("/uploads", express.static("uploads"));
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDoc, {
+    explorer: true,
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  })
+);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello welcome to circle!");

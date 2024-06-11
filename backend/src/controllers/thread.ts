@@ -27,6 +27,17 @@ async function findOne(req: Request, res: Response) {
 }
 
 async function create(req: Request, res: Response) {
+  /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "multipart/form-data": {
+                    schema: {
+                       $ref: "#/components/schemas/CreateThreadDTO"
+                    }  
+                }
+            }
+        } 
+    */
   try {
     const user = res.locals.user as UserJWTPayload;
     const body = {
