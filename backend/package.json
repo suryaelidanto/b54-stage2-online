@@ -3,7 +3,6 @@
    "version": "0.0.1",
    "description": "Awesome project developed with TypeORM.",
    "type": "commonjs",
-   "main": "dist/index.js",
    "devDependencies": {
       "@types/bcrypt": "^5.0.2",
       "@types/cors": "^2.8.17",
@@ -32,7 +31,7 @@
       "swagger-ui-express": "^5.0.1"
    },
    "scripts": {
-      "start": "node dist/index.js",
+      "start": "node dist/src/index.js",
       "dev": "nodemon src/index.ts",
       "build": "tsc && prisma generate",
       "swagger": "node swagger/swagger.js"
