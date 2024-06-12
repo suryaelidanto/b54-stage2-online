@@ -9,9 +9,9 @@ const doc = {
     description: "Welcome to my API Docs",
   },
   servers: [
-    {
-      url: "https://refreshing-happiness-production.up.railway.app",
-    },
+    // {
+    //   url: "https://refreshing-happiness-production.up.railway.app",
+    // },
     {
       url: "http://localhost:3000",
     },

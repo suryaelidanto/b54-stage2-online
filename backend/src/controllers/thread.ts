@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import ThreadService from "../services/thread";
 import { UserJWTPayload } from "../types/auth";
+import { redisClient } from "../libs/redis";
 
 async function find(req: Request, res: Response) {
   try {
     const threads = await ThreadService.find();
+    await redisClient.set("THREADS_DATA", JSON.stringify(threads));
     res.json(threads);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -45,6 +47,7 @@ async function create(req: Request, res: Response) {
       image: req.file ? req.file.path : "",
     };
 
+    await redisClient.del("THREADS_DATA");
     const createdThread = await ThreadService.create(body, user.id);
     res.status(201).json(createdThread);
   } catch (error) {

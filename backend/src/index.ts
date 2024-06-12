@@ -1,6 +1,6 @@
 import cors from "cors";
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import AuthController from "./controllers/auth";
 import ThreadController from "./controllers/thread";
 import UserController from "./controllers/user";
@@ -8,6 +8,8 @@ import { upload } from "./middlewares/upload-file";
 import { authenticate } from "./middlewares/authenticate";
 import swaggerUi from "swagger-ui-express";
 import swaggerDoc from "../swagger/swagger-output.json";
+import { initializeRedisClient, redisClient } from "./libs/redis";
+
 dotenv.config();
 
 const app = express();
@@ -27,6 +29,7 @@ app.use(
     explorer: true,
     swaggerOptions: {
       persistAuthorization: true,
+      displayRequestDuration: true,
     },
   })
 );
@@ -40,7 +43,17 @@ router.get("/", (req: Request, res: Response) => {
   res.send("Welcome to v1!");
 });
 
-router.get("/threads", authenticate, ThreadController.find);
+router.get(
+  "/threads",
+  authenticate,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await redisClient.get("THREADS_DATA");
+    if (result) return res.json(JSON.parse(result));
+
+    next();
+  },
+  ThreadController.find
+);
 router.get("/threads/:id", authenticate, ThreadController.findOne);
 router.post(
   "/threads",
@@ -62,6 +75,8 @@ routerv2.get("/", (req: Request, res: Response) => {
   res.send("Welcome to v2!");
 });
 
-app.listen(port, () => {
-  console.log(`Server berjalan di port ${port}`);
+initializeRedisClient().then(() => {
+  app.listen(port, () => {
+    console.log(`Server berjalan di port ${port}`);
+  });
 });
