@@ -5,7 +5,7 @@ export let redisClient: RedisClientType<any, any, any>;
 
 export async function initializeRedisClient() {
   redisClient = await createClient({
-    url: `redis://${process.env.REDIS_URL}`,
+    url: `${process.env.REDIS_URL}`,
   })
     .on("error", (err) => {
       throw new Error("Redis client error!");
