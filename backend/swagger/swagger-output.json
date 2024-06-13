@@ -8,6 +8,9 @@
   "servers": [
     {
       "url": "https://refreshing-happiness-production.up.railway.app"
+    },
+    {
+      "url": "http://localhost:3000"
     }
   ],
   "paths": {

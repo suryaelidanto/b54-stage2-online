@@ -12,9 +12,9 @@ const doc = {
     {
       url: "https://refreshing-happiness-production.up.railway.app",
     },
-    // {
-    //   url: "http://localhost:3000",
-    // },
+    {
+      url: "http://localhost:3000",
+    },
   ],
   components: {
     "@schemas": {
