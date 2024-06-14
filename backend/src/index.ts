@@ -14,12 +14,12 @@ import { RedisStore } from "rate-limit-redis";
 
 dotenv.config();
 
-initializeRedisClient().then(() => {
-  const app = express();
-  const port = process.env.PORT || 3000;
-  const router = express.Router();
-  const routerv2 = express.Router();
+export const app = express();
+const port = process.env.PORT || 3000;
+const router = express.Router();
+const routerv2 = express.Router();
 
+initializeRedisClient().then(() => {
   const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     limit: 1000, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
