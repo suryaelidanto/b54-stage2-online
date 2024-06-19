@@ -47,7 +47,7 @@ initializeRedisClient().then(() => {
   );
 
   app.get("/", async (req: Request, res: Response) => {
-    res.send("Hello welcome to circle!");
+    res.send("Hello welcome to circle!!!");
   });
 
   // v1
