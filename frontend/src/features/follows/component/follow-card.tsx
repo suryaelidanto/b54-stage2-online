@@ -45,7 +45,7 @@ export function FollowCard() {
                   <VStack spacing="0" alignItems={"start"} mt="4" ms="1">
                     <Text fontSize="14px">Richard Stevens</Text>
                     <Text fontSize="12px" color="grey">
-                      @rist
+                      @rich
                     </Text>
                     <Text fontSize="14px"></Text>
                   </VStack>
