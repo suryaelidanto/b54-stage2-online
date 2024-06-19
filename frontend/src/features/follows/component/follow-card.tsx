@@ -26,7 +26,7 @@ export function FollowCard() {
         <Tabs isFitted variant={"unstyled"}>
           <TabList mb={"1em"}>
             <Tab>Followers</Tab>
-            <Tab>Following</Tab>
+            <Tab>Followings</Tab>
           </TabList>
           <TabIndicator
             mt="-1.5px"
