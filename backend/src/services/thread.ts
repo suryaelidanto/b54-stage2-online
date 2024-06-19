@@ -6,7 +6,10 @@ import { omitProperties } from "../utils/omitProperties";
 
 const prisma = new PrismaClient();
 
-async function find(userId: number) {
+/**
+ *  @param userId - The currently signed in user id (optional).
+ */
+async function find(userId?: number) {
   try {
     const threads = await prisma.thread.findMany({
       include: {
@@ -35,7 +38,11 @@ async function find(userId: number) {
   }
 }
 
-async function findOne(id: number, userId: number) {
+/**
+ * @param id id of the thread
+ * @param userId - The currently signed in user id (optional).
+ */
+async function findOne(id: number, userId?: number) {
   try {
     const thread = await prisma.thread.findFirst({
       where: { id },

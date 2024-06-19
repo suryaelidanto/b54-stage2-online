@@ -61,10 +61,7 @@ async function create(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const thread = await ThreadService.findOne(
-      Number(id),
-      res.locals?.user?.id
-    );
+    const thread = await ThreadService.findOne(Number(id));
 
     if (!thread) {
       return res.status(404).json({ message: "Thread not found" });
@@ -80,10 +77,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const thread = await ThreadService.findOne(
-      Number(id),
-      res.locals?.user?.id
-    );
+    const thread = await ThreadService.findOne(Number(id));
 
     if (!thread) {
       return res.status(404).json({ message: "Thread not found" });
