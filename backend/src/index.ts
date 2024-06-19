@@ -84,6 +84,7 @@ initializeRedisClient().then(() => {
   router.get("/auth/verify-email", AuthController.verifyEmail);
 
   router.get("/users", authenticate, UserController.find);
+  router.get("/current-user", authenticate, UserController.findCurrent);
 
   // v2
   routerv2.get("/", (req: Request, res: Response) => {
