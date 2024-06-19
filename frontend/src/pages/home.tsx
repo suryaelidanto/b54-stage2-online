@@ -1,4 +1,5 @@
 import { ThreadCard } from "@/features/home/components/thread-card";
+import { SuggestionTab } from "@/features/right-bar/components/suggestion-tab";
 import { useHomePage } from "@/hooks/use-home-page";
 import { Box, Button, Input, Text } from "@chakra-ui/react";
 
@@ -22,6 +23,8 @@ function HomePage() {
           {threads?.map((thread) => <ThreadCard thread={thread} />)}
         </Box>
       </Box>
+
+      <SuggestionTab />
     </Box>
   );
 }
