@@ -17,7 +17,6 @@ dotenv.config();
 export const app = express();
 const port = process.env.PORT || 3000;
 const router = express.Router();
-const routerv2 = express.Router();
 
 initializeRedisClient().then(() => {
   const limiter = rateLimit({
@@ -34,7 +33,6 @@ initializeRedisClient().then(() => {
   app.use(cors());
   app.use(express.json());
   app.use("/api/v1", router);
-  app.use("/api/v2", routerv2);
   app.use("/uploads", express.static("uploads"));
   app.use(
     "/docs",
@@ -84,11 +82,6 @@ initializeRedisClient().then(() => {
   router.get("/auth/verify-email", AuthController.verifyEmail);
 
   router.get("/users", authenticate, UserController.find);
-
-  // v2
-  routerv2.get("/", (req: Request, res: Response) => {
-    res.send("Welcome to v2!");
-  });
 
   app.listen(port, () => {
     console.log(`Server berjalan di port ${port}`);
