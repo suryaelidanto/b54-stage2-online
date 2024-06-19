@@ -5,7 +5,6 @@ import { redisClient } from "../libs/redis";
 
 async function find(req: Request, res: Response) {
   try {
-    console.log(res.locals?.user?.id, "USRE ID");
     const threads = await ThreadService.find(res.locals?.user?.id);
     await redisClient.set("THREADS_DATA", JSON.stringify(threads));
     res.json(threads);
