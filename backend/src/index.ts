@@ -81,7 +81,7 @@ initializeRedisClient().then(() => {
   router.post("/auth/check", authenticate, AuthController.check);
   router.get("/auth/verify-email", AuthController.verifyEmail);
 
-  router.get("/users", authenticate, UserController.find);
+  router.get("/users", authenticate, UserController.find)
 
   app.listen(port, () => {
     console.log(`Server berjalan di port ${port}`);
