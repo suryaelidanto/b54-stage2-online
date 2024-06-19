@@ -53,7 +53,7 @@ async function create(dto: CreateThreadDTO, userId: number) {
     });
 
     const upload = await cloudinary.uploader.upload(dto.image, {
-      upload_preset: "b54circle",
+      upload_preset: "imagecircle",
     });
 
     return await prisma.thread.create({
