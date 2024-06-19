@@ -11,7 +11,7 @@ function HomePage() {
         <Text fontWeight={"bold"} fontSize={"30px"}>
           Home
         </Text>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} style={{gap: 10, display:"flex", flexDirection:"column"}}>
           <Input {...register("content")} />
           <Input type="file" {...register("image")} />
           <Button type="submit" backgroundColor={"brand.primary"}>
