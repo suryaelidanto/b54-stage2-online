@@ -9,6 +9,7 @@ import HomePage from "./pages/home";
 import SearchPage from "./pages/search";
 import { SET_USER } from "./redux/slices/auth";
 import { RootState } from "./redux/store";
+import RootLayout from "./layout/root-layout";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -58,12 +59,14 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/auth/login" element={<LoginPage />} />
-      <Route path="/auth/register" element={<RegisterPage />} />
-
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/" element={<RootLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
+        </Route>
+
+        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/auth/register" element={<RegisterPage />} />
       </Route>
     </Routes>
   );
