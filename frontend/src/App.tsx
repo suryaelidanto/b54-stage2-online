@@ -1,74 +1,80 @@
 import { useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { useDispatch } from "react-redux";
+import { Navigate, Route, Routes } from "react-router-dom";
+import RootLayout from "./layout/root-layout";
 import { api } from "./libs/api";
 import LoginPage from "./pages/auth-login";
 import RegisterPage from "./pages/auth-register";
+import { FollowPage } from "./pages/follows";
 import HomePage from "./pages/home";
 import SearchPage from "./pages/search";
 import { SET_USER } from "./redux/slices/auth";
-import { RootState } from "./redux/store";
-import RootLayout from "./layout/root-layout";
-import { FollowPage } from "./pages/follows";
 
 function App() {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const currentUser = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
   const toast = useToast();
 
-  const PrivateRoute = () => {
-    if (!isLoading) {
-      if (currentUser.email) return <Outlet />;
-
-      return <Navigate to={"/auth/login"} />;
-    }
-  };
-
-  async function authCheck() {
-    try {
+  const { data: authUser, isPending } = useQuery({
+    queryKey: ["authUser"],
+    queryFn: async () => {
       const token = localStorage.token;
-      const response = await api.post(
-        "/auth/check",
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      if (token) {
+        try {
+          const response = await api.post(
+            "/auth/check",
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          dispatch(SET_USER(response.data));
+          return response.data;
+        } catch (error) {
+          localStorage.removeItem("token");
+          toast({
+            title: "User not authenticated!",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+          });
         }
-      );
+      }
+    },
+  });
 
-      dispatch(SET_USER(response.data));
-      setIsLoading(false);
-    } catch (error) {
-      localStorage.removeItem("token");
-      setIsLoading(false);
-      toast({
-        title: "User not authenticated!",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }
-
-  useEffect(() => {
-    const token = localStorage.token;
-    if (token) authCheck();
-  }, []);
+  if (isPending)
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
 
   return (
     <Routes>
-      <Route path="/auth/login" element={<LoginPage />} />
-      <Route path="/auth/register" element={<RegisterPage />} />
+      <Route path="/auth/login" element={
+        !authUser ?  <LoginPage /> : <Navigate to={"/"} />  
+        } />
+      <Route path="/auth/register" element={
+        !authUser ?  <RegisterPage /> : <Navigate to={"/"} />  
+      } />
       <Route path="/follows" element={<FollowPage />} />
 
-        <Route path="/" element={<RootLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/search" element={<SearchPage />} />
-        </Route>
-      <Route element={<PrivateRoute />}>
+      <Route path="/" element={<RootLayout />}>
+        <Route
+          path="/"
+          element={
+            authUser ? <HomePage /> : <Navigate to={"/auth/login"} replace />
+          }
+        />
+        <Route
+          path="/search"
+          element={
+            authUser ? <SearchPage /> : <Navigate to={"/auth/login"} replace />
+          }
+        />
       </Route>
     </Routes>
   );
