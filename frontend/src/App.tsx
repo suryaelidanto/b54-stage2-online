@@ -9,6 +9,7 @@ import HomePage from "./pages/home";
 import SearchPage from "./pages/search";
 import { SET_USER } from "./redux/slices/auth";
 import { RootState } from "./redux/store";
+import { FollowPage } from "./pages/follows";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -60,6 +61,7 @@ function App() {
     <Routes>
       <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/auth/register" element={<RegisterPage />} />
+      <Route path="/follows" element={<FollowPage />} />
 
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<HomePage />} />
