@@ -1,6 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import Sidebar from "../components/sidebar/sidebar";
 import { Outlet } from "react-router-dom";
+import { SuggestionTab } from "@/features/right-bar/components/suggestion-tab";
 
 function RootLayout() {
   return (
@@ -12,7 +13,7 @@ function RootLayout() {
         <Outlet />
       </GridItem>
       <GridItem w="100%">
-        {/* <RightPanel /> */}
+        <SuggestionTab />
       </GridItem>
     </Grid>
   );

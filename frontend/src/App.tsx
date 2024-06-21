@@ -64,11 +64,11 @@ function App() {
       <Route path="/auth/register" element={<RegisterPage />} />
       <Route path="/follows" element={<FollowPage />} />
 
-      <Route element={<PrivateRoute />}>
         <Route path="/" element={<RootLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchPage />} />
         </Route>
+      <Route element={<PrivateRoute />}>
       </Route>
     </Routes>
   );
