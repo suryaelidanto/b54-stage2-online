@@ -1,4 +1,3 @@
-import { ThreadCard } from "@/features/home/components/thread-card";
 import { fetchProfile, getThreads, profilePage } from "@/hooks/profile-page";
 import { Box, Button, Divider, Flex, FormControl, FormHelperText, Heading, IconButton, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useDisclosure } from "@chakra-ui/react";
 import { useEffect } from "react";
@@ -6,7 +5,7 @@ import { BsImage } from "react-icons/bs";
 
 
 export function ProfilePage(){
-    const {threads, profileData} = profilePage();
+    const { profileData} = profilePage();
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
@@ -25,8 +24,8 @@ export function ProfilePage(){
             <Box width={'90%'} marginX={'auto'}>
                 
                 {/* Image masih dimasukkan dummy secara manual ke database */}
-                <Image src={profileData?.photoProfile} width={'720px'} height={'120px'} objectFit={'cover'} borderRadius={'12px'}/>
-                <Image borderRadius={'50%'} width={'64px'} height={'64px'} objectFit={'cover'} src={profileData?.photoProfile} zIndex={4} position={'relative'} top={'-2rem'} left={'1rem'} border={`4px solid #242424`}/>  
+                <Image src={profileData?.photoProfile ? profileData?.photoProfile : "null"} width={'720px'} height={'120px'} objectFit={'cover'} borderRadius={'12px'}/>
+                <Image borderRadius={'50%'} width={'64px'} height={'64px'} objectFit={'cover'} src={profileData && profileData?.photoProfile} zIndex={4} position={'relative'} top={'-2rem'} left={'1rem'} border={`4px solid #242424`}/>  
 
                 <Button onClick={onOpen} colorScheme='gray' size={'sm'} variant='outline' color={'white'} zIndex={4} position={'relative'} top={'-3rem'} left={'27rem'} borderRadius={'14px'}>Edit Profile</Button>
                 <Modal isOpen={isOpen} onClose={onClose}>
@@ -38,8 +37,8 @@ export function ProfilePage(){
                     <ModalBody>
                     <Flex flexDirection={'column'}>
                         <Box width={'100%'} marginX={'auto'} height={'60%'} mb={'0.5rem'}>
-                        <Image src={ profileData?.photoProfile} width={'720px'} height={'120px'} objectFit={'cover'} borderRadius={'12px'}/>
-                        <Image borderRadius={'50%'} width={'72px'} height={'72px'} objectFit={'cover'} src={ profileData?.photoProfile} zIndex={4} position={'relative'} top={'-2rem'} left={'1rem'} border={`4px solid #242424`}/>
+                        <Image src={ profileData && profileData?.photoProfile} width={'720px'} height={'120px'} objectFit={'cover'} borderRadius={'12px'}/>
+                        <Image borderRadius={'50%'} width={'72px'} height={'72px'} objectFit={'cover'} src={ profileData && profileData?.photoProfile} zIndex={4} position={'relative'} top={'-2rem'} left={'1rem'} border={`4px solid #242424`}/>
                         {/* <Text color={"error.primary"}>{errors.photo_profile && errors.photo_profile.message}</Text> */}
                         </Box>
                         <FormControl display={'flex'} width={'100%'} flexDirection={'column'} alignItems={'start'} marginBottom={'0.33rem'} color={'white'}>
@@ -103,9 +102,10 @@ export function ProfilePage(){
             </Flex>
         <Divider orientation='horizontal' borderColor={'rgb(110, 110, 110, 0.333)'} mt={'1rem'}/>
         {/* Need to get specified threads from current user */}
-        <Box mt={"20px"} ms={'1rem'}>
+        {/* There is error in the thread.userphoto */}
+        {/* <Box mt={"20px"} ms={'1rem'}>
          {threads?.map((thread) => <ThreadCard thread={thread} />)}
-        </Box>
+        </Box> */}
         </Flex>
         </Box>
        </>
