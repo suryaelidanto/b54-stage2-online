@@ -9,6 +9,7 @@ import HomePage from "./pages/home";
 import SearchPage from "./pages/search";
 import { SET_USER } from "./redux/slices/auth";
 import { RootState } from "./redux/store";
+import RootLayout from "./layout/root-layout";
 import { FollowPage } from "./pages/follows";
 
 function App() {
@@ -64,8 +65,10 @@ function App() {
       <Route path="/follows" element={<FollowPage />} />
 
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/search" element={<SearchPage />} />
+        <Route path="/" element={<RootLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
+        </Route>
       </Route>
     </Routes>
   );
