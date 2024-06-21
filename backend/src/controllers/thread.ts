@@ -5,7 +5,7 @@ import { redisClient } from "../libs/redis";
 
 async function find(req: Request, res: Response) {
   try {
-    const threads = await ThreadService.find();
+    const threads = await ThreadService.find(res.locals?.user?.id);
     await redisClient.set("THREADS_DATA", JSON.stringify(threads));
     res.json(threads);
   } catch (error) {
@@ -16,7 +16,10 @@ async function find(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const { id } = req.params;
-    const thread = await ThreadService.findOne(Number(id));
+    const thread = await ThreadService.findOne(
+      Number(id),
+      res.locals?.user?.id
+    );
 
     if (!thread) {
       return res.status(404).json({ message: "Thread not found" });
