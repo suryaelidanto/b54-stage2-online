@@ -1,55 +1,21 @@
 import { ThreadCard } from "@/features/home/components/thread-card";
-import { ThreadEntity } from "@/features/home/entities/thread";
-import { api } from "@/libs/api";
+import { fetchProfile, getThreads, profilePage } from "@/hooks/profile-page";
 import { Box, Button, Divider, Flex, FormControl, FormHelperText, Heading, IconButton, Image, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, Textarea, useDisclosure } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { BsImage } from "react-icons/bs";
 
-type editProfileForm = {
-    photoProfile?: string,
-    fullName : string,
-    username : string,
-    bio : string,
-    followersCount: number,
-    followingsCount: number
-}
-
-export async function fetchProfile(){
-    try {
-        const response = await api.get("/current-user");
-    return response.data;
-    } catch(error){
-        return error;
-    }
-}
-
-async function getThreads() {
-    const response = await api.get("/threads");
-    return response.data;
-  }
 
 export function ProfilePage(){
+    const {threads, profileData} = profilePage();
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { data: threads } = useQuery<ThreadEntity[]>({
-        queryKey: ["threads"],
-        queryFn: getThreads,
-      });
-    
-    const { data: profileData  } = useQuery<editProfileForm>({
-        queryKey: ["profile"],
-        queryFn: fetchProfile,
-        });
 
-        useEffect(() => {
-            const response = fetchProfile();
-            console.log(response);
+    useEffect(() => {
+        fetchProfile();
+    },[])
+    
+    useEffect(() => {
+        getThreads();
         },[])
-        
-        useEffect(() => {
-            const response = getThreads();
-            console.log("threads",response);
-          },[])
 
     return (
         <>

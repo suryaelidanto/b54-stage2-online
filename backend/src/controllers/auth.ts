@@ -41,7 +41,7 @@ async function register(req: Request, res: Response) {
   try {
     const user = await AuthService.register(req.body);
 
-    const token = jwt.sign(user.id.toString(), "XScG1uTJlb");
+    const token = jwt.sign(user.id.toString(), process.env.JWT_SECRET);
     const fullUrl = req.protocol + "://" + req.get("host");
     const info = await transporter.sendMail({
       from: "Circle <suryaelidanto@gmail.com>", // sender address
