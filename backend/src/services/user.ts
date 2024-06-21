@@ -18,6 +18,22 @@ async function find(search: string) {
   }
 }
 
+async function findCurrent(user: number) {
+  try {
+    return await prisma.user.findUnique({
+      where: {
+        id: user
+      },
+      include :{
+        followeds:true,
+        followers: true
+      }
+    });
+  } catch (error) {
+    throw new Error(error.message || "Failed to retrieve users");
+  }
+}
+
 // async function find(user: UserJWTPayload, search: string) {
 //   try {
 //     const users = await prisma.user.findMany();
@@ -37,4 +53,4 @@ async function find(search: string) {
 //   }
 // }
 
-export default { find };
+export default { find, findCurrent };

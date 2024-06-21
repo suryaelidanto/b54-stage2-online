@@ -8,6 +8,7 @@ import LoginPage from "./pages/auth-login";
 import RegisterPage from "./pages/auth-register";
 import { FollowPage } from "./pages/follows";
 import HomePage from "./pages/home";
+import { ProfilePage } from "./pages/profilePage";
 import SearchPage from "./pages/search";
 import { SET_USER } from "./redux/slices/auth";
 
@@ -54,13 +55,14 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/auth/login" element={
-        !authUser ?  <LoginPage /> : <Navigate to={"/"} />  
-        } />
-      <Route path="/auth/register" element={
-        !authUser ?  <RegisterPage /> : <Navigate to={"/"} />  
-      } />
-      <Route path="/follows" element={<FollowPage />} />
+      <Route
+        path="/auth/login"
+        element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
+      />
+      <Route
+        path="/auth/register"
+        element={!authUser ? <RegisterPage /> : <Navigate to={"/"} />}
+      />
 
       <Route path="/" element={<RootLayout />}>
         <Route
@@ -73,6 +75,18 @@ function App() {
           path="/search"
           element={
             authUser ? <SearchPage /> : <Navigate to={"/auth/login"} replace />
+          }
+        />
+        <Route
+          path="/follows"
+          element={
+            authUser ? <FollowPage /> : <Navigate to={"/auth/login"} replace />
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            authUser ? <ProfilePage /> : <Navigate to={"/auth/login"} replace />
           }
         />
       </Route>

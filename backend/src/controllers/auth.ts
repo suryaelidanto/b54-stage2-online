@@ -43,7 +43,6 @@ async function register(req: Request, res: Response) {
 
     const token = jwt.sign(user.id.toString(), process.env.JWT_SECRET);
     const fullUrl = req.protocol + "://" + req.get("host");
-
     const info = await transporter.sendMail({
       from: "Circle <suryaelidanto@gmail.com>", // sender address
       to: user.email, // list of receivers
@@ -51,6 +50,7 @@ async function register(req: Request, res: Response) {
       html: `<a href="${fullUrl}/api/v1/auth/verify-email?token=${token}">Klik untuk verifikasi email kamu!</a>`, // html body
     });
 
+    console.log(info)
     console.log("Message sent: %s", info.messageId);
 
     await AuthService.createVerification(token, "EMAIL");
