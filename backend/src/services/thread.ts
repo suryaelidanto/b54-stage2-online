@@ -2,12 +2,16 @@ import { PrismaClient } from "@prisma/client";
 import { UpdateThreadDTO, CreateThreadDTO } from "../dto/thread-dto";
 import { createThreadSchema } from "../validators/thread";
 import { v2 as cloudinary } from "cloudinary";
+import { omitProperties } from "../utils/omitProperties";
 
 const prisma = new PrismaClient();
 
-async function find() {
+/**
+ *  @param userId - The currently signed in user id (optional).
+ */
+async function find(userId?: number) {
   try {
-    return await prisma.thread.findMany({
+    const threads = await prisma.thread.findMany({
       include: {
         user: {
           select: {
@@ -17,22 +21,46 @@ async function find() {
             photoProfile: true,
           },
         },
+        likes: {
+          take: 1,
+          where: { userId: userId || -1 },
+          select: { userId: true },
+        },
       },
     });
+
+    return threads.map((thread) => ({
+      ...omitProperties(thread, ["likes"]),
+      isLiked: thread.likes?.[0]?.userId ? true : false,
+    }));
   } catch (error) {
     throw new Error("Failed to retrieve threads");
   }
 }
 
-async function findOne(id: number) {
+/**
+ * @param id id of the thread
+ * @param userId - The currently signed in user id (optional).
+ */
+async function findOne(id: number, userId?: number) {
   try {
     const thread = await prisma.thread.findFirst({
       where: { id },
+      include: {
+        likes: {
+          take: 1,
+          where: { userId: userId || -1 },
+          select: { userId: true },
+        },
+      },
     });
 
     if (!thread) throw new Error("Thread not found");
 
-    return thread;
+    return {
+      ...omitProperties(thread, ["likes"]),
+      isLiked: thread.likes?.[0]?.userId ? true : false,
+    };
   } catch (error) {
     throw new Error(error.message || "Failed to retrieve thread");
   }
