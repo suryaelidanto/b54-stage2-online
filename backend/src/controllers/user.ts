@@ -13,20 +13,4 @@ async function find(req: Request, res: Response) {
   }
 }
 
-async function findCurrent(req: Request, res: Response) {
-  try {
-    const current = res.locals.user;
-    const users = await UserService.findCurrent(current.id);
-    return res.json({
-      ...users,
-      followersCount: users.followers.length,
-      followingsCount: users.followeds.length
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-}
-
-export default { find, findCurrent };
+export default { find };

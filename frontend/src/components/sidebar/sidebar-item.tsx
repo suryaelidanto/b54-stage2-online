@@ -54,7 +54,7 @@ export default function SidebarItem() {
             <Text>Follows</Text>
           </HStack>
         </Link>
-        <Link to="/profile" style={{ width: "100%" }}>
+        <Link to="/me" style={{ width: "100%" }}>
           <HStack gap={3} ml={1}>
             <UserIcon fontSize={"1.5rem"} />
             <Text>Profile</Text>

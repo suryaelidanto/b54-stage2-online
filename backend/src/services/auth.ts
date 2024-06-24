@@ -44,14 +44,14 @@ async function login(dto: LoginDTO) {
 async function register(dto: RegisterDTO) {
   try {
     const validate = registerSchema.validate(dto);
-    
+
     if (validate.error) {
-      console.log(validate.error)
       throw new Error(validate.error.message);
     }
 
     const salt = 10;
     const hashedPassword = await bcrypt.hash(dto.password, salt);
+
     dto.password = hashedPassword;
 
     return await prisma.user.create({
