@@ -72,7 +72,7 @@ function SearchPage() {
               onClick={handleFollowClick}
               style={buttonStyle(isFollowing)}
             >
-              {isFollowing ? 'Following' : 'Follow'}
+              {isFollowing ?  'Following' : 'Follow'}
             </Button>
             </HStack>
           </Flex>
